@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useCallback, useEffect } from 'react';
-import { range } from 'lodash';
 import { useImmutableRef } from '@mertsolak/use-immutable-ref';
 
 import { Props } from './Console.config';
@@ -9,12 +8,12 @@ import styles from './Console.module.scss';
 export const Console: React.FC<Props> = ({ commands, containerClassName, terminalClassName }) => {
   const [terminal, setRef] = useImmutableRef<HTMLTextAreaElement>();
 
-  const addConsoleSign = useCallback((nextLineCount: number = 0) => {
+  const addConsoleSign = useCallback((withNextLine: boolean = true) => {
     let textWithSign = '';
 
-    range(0, nextLineCount).forEach(() => {
+    if (withNextLine) {
       textWithSign += '\n';
-    });
+    }
 
     textWithSign += '$ ';
 
@@ -45,7 +44,7 @@ export const Console: React.FC<Props> = ({ commands, containerClassName, termina
 
         setTimeout(() => {
           if (index === 0) {
-            cloneOfCurrentTerminal.value += addConsoleSign(commandDelay ? 2 : 0);
+            cloneOfCurrentTerminal.value += addConsoleSign(false);
           }
 
           if (index === array.length - 1 && executable) {
@@ -55,7 +54,7 @@ export const Console: React.FC<Props> = ({ commands, containerClassName, termina
           cloneOfCurrentTerminal.value += char;
 
           if (lastCommand && index === array.length - 1) {
-            cloneOfCurrentTerminal.value += addConsoleSign(2);
+            cloneOfCurrentTerminal.value += addConsoleSign();
 
             cloneOfCurrentTerminal.setSelectionRange(
               cloneOfCurrentTerminal.value.length,
@@ -75,7 +74,7 @@ export const Console: React.FC<Props> = ({ commands, containerClassName, termina
       const { value } = event.target;
 
       if (lastChar === '$') {
-        terminal.value += ' ';
+        terminal.value = terminal.value.substr(0, terminal.value.length - 2);
         return;
       }
 
@@ -85,7 +84,7 @@ export const Console: React.FC<Props> = ({ commands, containerClassName, termina
       if ((lastChar?.match(new RegExp('\\n')) || []).length) {
         execute(lastLine.replace('$ ', ''));
 
-        terminal.value += addConsoleSign(1);
+        terminal.value += addConsoleSign(false);
       }
     },
     [terminal],
