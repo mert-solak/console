@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.3](https://github.com/mert-solak/console/compare/v1.0.2...v1.0.3) (2021-07-24)
+
+
+### Bug Fixes
+
+* **src/*:** missing white space bug fix ([e604959](https://github.com/mert-solak/console/commit/e604959b06eb27ab103b4e2dd4224ad251885a7a))
+
 ### [1.0.2](https://github.com/mert-solak/console/compare/v1.0.1...v1.0.2) (2021-07-10)
 
 
