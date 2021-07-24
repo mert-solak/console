@@ -36,6 +36,7 @@ export const Console: React.FC<Props> = ({ commands, containerClassName, termina
       command: string,
       executable: boolean = false,
       lastCommand: boolean = false,
+      firstCommand: boolean = false,
     ) => {
       const cloneOfCurrentTerminal = currentTerminal;
 
@@ -43,7 +44,9 @@ export const Console: React.FC<Props> = ({ commands, containerClassName, termina
         const delay = speed * index;
 
         setTimeout(() => {
-          if (index === 0) {
+          if (index === 0 && !firstCommand) {
+            cloneOfCurrentTerminal.value += addConsoleSign(true);
+          } else if (index === 0 && firstCommand) {
             cloneOfCurrentTerminal.value += addConsoleSign(false);
           }
 
@@ -104,6 +107,7 @@ export const Console: React.FC<Props> = ({ commands, containerClassName, termina
         command.command,
         command.isExecutable,
         index === commands.length - 1,
+        index === 0,
       );
       commandDelay += command.command.length * command.speed;
     });
